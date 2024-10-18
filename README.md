@@ -21,12 +21,14 @@ Backend часть проекта разработана с использова
 
 ## Пример запроса к API на регистрацию
 
-``{
+```json
+{
   "name": "Александр Ширяев",
   "email": "sashaintim@don.ru",
   "password": "password123",
   "password_confirmation": "password123"
-}``
+}
+```
 
 ## Пример ответа
 
