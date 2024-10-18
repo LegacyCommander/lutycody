@@ -8,9 +8,56 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\Schema(
+ *     schema="RegisterRequest",
+ *     type="object",
+ *     required={"name", "email", "password", "password_confirmation"},
+ *     @OA\Property(property="name", type="string", example="Иван Иванов"),
+ *     @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
+ *     @OA\Property(property="password", type="string", format="password", example="password123"),
+ *     @OA\Property(property="password_confirmation", type="string", format="password", example="password123")
+ * )
+ *
+ * @OA\Schema(
+ *     schema="RegisterResponse",
+ *     type="object",
+ *     @OA\Property(property="message", type="string", example="Пользователь успешно зарегистрирован"),
+ *     @OA\Property(property="user", ref="#/components/schemas/User"),
+ *     @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...")
+ * )
+ *
+ * @OA\Schema(
+ *     schema="LoginRequest",
+ *     type="object",
+ *     required={"email", "password"},
+ *     @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
+ *     @OA\Property(property="password", type="string", format="password", example="password123")
+ * )
+ *
+ * @OA\Schema(
+ *     schema="LoginResponse",
+ *     type="object",
+ *     @OA\Property(property="message", type="string", example="Успешный вход"),
+ *     @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."),
+ *     @OA\Property(property="user", ref="#/components/schemas/User")
+ * )
+ *
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Иван Иванов"),
+ *     @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-10-17T12:34:56Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-17T12:34:56Z")
+ * )
+ */
 class AuthController extends Controller
 {
     /**
+     * Регистрация нового пользователя.
+     *
      * @OA\Post(
      *     path="/api/register",
      *     summary="Регистрация нового пользователя",
@@ -18,28 +65,12 @@ class AuthController extends Controller
      *     tags={"Authentication"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name", "email", "password", "password_confirmation"},
-     *             @OA\Property(property="name", type="string", example="Иван Иванов"),
-     *             @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123"),
-     *             @OA\Property(property="password_confirmation", type="string", format="password", example="password123")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/RegisterRequest")
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Пользователь успешно зарегистрирован",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Пользователь успешно зарегистрирован"),
-     *             @OA\Property(property="user", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Иван Иванов"),
-     *                 @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
-     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2024-10-17T12:34:56Z"),
-     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-17T12:34:56Z")
-     *             ),
-     *             @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/RegisterResponse")
      *     ),
      *     @OA\Response(
      *         response=400,
@@ -49,6 +80,9 @@ class AuthController extends Controller
      *         )
      *     )
      * )
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request)
     {
@@ -78,6 +112,8 @@ class AuthController extends Controller
     }
 
     /**
+     * Вход пользователя и получение JWT-токена.
+     *
      * @OA\Post(
      *     path="/api/login",
      *     summary="Аутентификация пользователя",
@@ -85,26 +121,12 @@ class AuthController extends Controller
      *     tags={"Authentication"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"email", "password"},
-     *             @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/LoginRequest")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Успешный вход",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Успешный вход"),
-     *             @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."),
-     *             @OA\Property(property="user", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Иван Иванов"),
-     *                 @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
-     *                 @OA\Property(property="created_at", type="string", format="date-time", example="2024-10-17T12:34:56Z"),
-     *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-17T12:34:56Z")
-     *             )
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/LoginResponse")
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -114,6 +136,9 @@ class AuthController extends Controller
      *         )
      *     )
      * )
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
@@ -131,6 +156,8 @@ class AuthController extends Controller
     }
 
     /**
+     * Получение информации о текущем аутентифицированном пользователе.
+     *
      * @OA\Get(
      *     path="/api/user",
      *     summary="Получение информации о текущем пользователе",
@@ -140,13 +167,7 @@ class AuthController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Информация о пользователе",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Иван Иванов"),
-     *             @OA\Property(property="email", type="string", format="email", example="ivan@example.com"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2024-10-17T12:34:56Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2024-10-17T12:34:56Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/User")
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -156,6 +177,8 @@ class AuthController extends Controller
      *         )
      *     )
      * )
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getAuthenticatedUser()
     {
