@@ -2,13 +2,6 @@
 
 <p align="center"><img src="https://raw.githubusercontent.com/your-username/your-repo/main/path-to-your-logo.png" width="400" alt="Project Logo"></p>
 
-<p align="center">
-  <a href="https://github.com/your-username/your-repo/actions"><img src="https://github.com/your-username/your-repo/workflows/tests/badge.svg" alt="Build Status"></a>
-  <a href="https://packagist.org/packages/your-package"><img src="https://img.shields.io/packagist/dt/your-package" alt="Total Downloads"></a>
-  <a href="https://packagist.org/packages/your-package"><img src="https://img.shields.io/packagist/v/your-package" alt="Latest Stable Version"></a>
-  <a href="https://packagist.org/packages/your-package"><img src="https://img.shields.io/packagist/l/your-package" alt="License"></a>
-</p>
-
 ## Описание проекта
 
 Backend часть проекта разработана с использованием фреймворка **Laravel 11**. Проект предоставляет RESTful API для регистрации, аутентификации пользователей и получения информации о текущем пользователе.
@@ -27,3 +20,39 @@ Backend часть проекта разработана с использова
 - Composer
 - СУБД (рекомендуется PostgreSQL)
 - Расширения PHP: OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, JSON, BCMath
+
+## Пример запроса к API на регистрацию
+
+{
+  "name": "Александр Ширяев",
+  "email": "sashaintim@don.ru",
+  "password": "password123",
+  "password_confirmation": "password123"
+}
+
+## Пример ответа
+
+{
+  "message": "Пользователь успешно зарегистрирован",
+  "user": {
+    "id": 1,
+    "name": "Александр Ширяев",
+    "email": "sashaintim@don.ru",
+    "created_at": "2024-10-18T04:34:56Z",
+    "updated_at": "2024-10-18T04:34:56Z"
+  },
+  "token": "Cvj3nJcQe7djyjY818woxct9yTIF4zqQCaKfR03ng9fX1DMiSVjIwxi7qhruGO6M"
+}
+
+## Авторизация и аутентификация
+
+Для аутентификации используется JWT-токен. После успешной регистрации или входа пользователь получает токен, который должен передаваться в заголовке Authorization для доступа к защищенным ресурсам.
+
+## В проекте используется пакет darkaonline/l5-swagger для генерации документации API.
+
+Генерация документации: php artisan l5-swagger:generate
+Просмотр документации на локальном сервере: http://localhost:8000/api/documentation
+
+
+## кто дочитал тот гей
+
