@@ -62,6 +62,7 @@ class AuthController extends Controller
      *     path="/api/register",
      *     summary="Регистрация нового пользователя",
      *     description="Создает нового пользователя и возвращает токен аутентификации.",
+     *     operationId="registerUser",
      *     tags={"Authentication"},
      *     @OA\RequestBody(
      *         required=true,
@@ -118,6 +119,7 @@ class AuthController extends Controller
      *     path="/api/login",
      *     summary="Аутентификация пользователя",
      *     description="Авторизует пользователя и возвращает токен аутентификации.",
+     *     operationId="loginUser",
      *     tags={"Authentication"},
      *     @OA\RequestBody(
      *         required=true,
@@ -162,6 +164,7 @@ class AuthController extends Controller
      *     path="/api/user",
      *     summary="Получение информации о текущем пользователе",
      *     description="Возвращает данные аутентифицированного пользователя.",
+     *     operationId="getAuthenticatedUser",
      *     tags={"User"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Response(
